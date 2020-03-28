@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SpaceGame
+{
+    public class ComputerPlayer : Player
+    {
+        public ComputerPlayer()
+        {
+            MinHealth = 80;
+            MaxHealth = 91;
+            MinDamage = 5;
+            MaxDamage = 16;
+
+            Initialization();
+        }
+    }
+}
