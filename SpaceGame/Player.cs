@@ -17,7 +17,7 @@ namespace SpaceGame
             protected set;
         }
 
-        public int EnemyDamage;
+        //public int EnemyDamage;
 
         public bool CanAddGamePoints = true;
 
@@ -39,10 +39,13 @@ namespace SpaceGame
 
         public abstract void TakeScores();
 
+        /*
         public void GetDamage(int countOfHits)
         {
             Health -= EnemyDamage * countOfHits;
         }
+        */
+
         public void CheckIfOutOfBounds()
         {
             if (GamePoints > 12)

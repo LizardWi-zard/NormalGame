@@ -10,13 +10,13 @@ namespace SpaceGame
             Player player = new HumanPlayer();
             Player enemy = new ComputerPlayer();
 
-            enemy.EnemyDamage = player.Damage;
-            player.EnemyDamage = enemy.Damage;
+            //enemy.EnemyDamage = player.Damage;
+            //player.EnemyDamage = enemy.Damage;
 
             player.OutPutStats();
             enemy.OutPutStats();
 
-            Console.WriteLine("/ / / / Игра начата / / / /");
+            Console.WriteLine("/ / / / Game started / / / /");
 
             while (fight)
             {
@@ -39,8 +39,15 @@ namespace SpaceGame
                 
                 enemy.CheckIfOutOfBounds();
 
-                var attacked = WhoGetDamage(player, enemy);
-                attacked?.GetDamage(CountGamePoints(player, enemy));
+                var defender = WhoGetDamage(player, enemy);
+                var attacker = WhoGiveDamage(player, enemy);
+                //attacked?.GetDamage(CountGamePoints(player, enemy));
+                if (attacker != null && defender != null)
+                {
+                    GetDamage(CountGamePoints(player, enemy), attacker, defender);
+                }
+
+
 
                 player.OutPutStats();
                 enemy.OutPutStats();
@@ -51,18 +58,15 @@ namespace SpaceGame
                 fight = CheckIsFightContinue(player, enemy);
             }
 
-            Console.WriteLine("/ / / / Игра окончена / / / /");
+            Console.WriteLine("/ / / / Game ended / / / /");
 
             player.OutPutStats();
             enemy.OutPutStats();
 
-            Console.WriteLine($"Проигравший: {WhoGetDamage(player, enemy)}");
+            Console.WriteLine($"Loser: {WhoGetDamage(player, enemy)}");
 
             Console.ReadKey();
         }
-
-        
-
         static int CountGamePoints(Player player, Player bot)
         {
             if (player.GamePoints > bot.GamePoints)
@@ -95,6 +99,22 @@ namespace SpaceGame
             }
         }
 
+        static Player WhoGiveDamage(Player player, Player bot)
+        {
+            if (player.GamePoints < bot.GamePoints)
+            {
+                return bot;
+            }
+            else if (player.GamePoints > bot.GamePoints)
+            {
+                return player;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         static bool CheckIsFightContinue(Player player, Player bot)
         {
             if (player.Health <= 0 || bot.Health <= 0)
@@ -112,5 +132,11 @@ namespace SpaceGame
             }
             else return true;
         }
+
+        static void GetDamage(int countOfHits, Player attacker, Player defender)
+        {
+            defender.Health -= attacker.Damage * countOfHits; 
+        }
+
     }
 }
