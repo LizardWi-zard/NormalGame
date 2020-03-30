@@ -15,5 +15,10 @@ namespace SpaceGame
 
             Initialization();
         }
+
+        public override void TakeScores()
+        {
+            GamePoints += new Random().Next(1, 7);
+        }     
     }
 }

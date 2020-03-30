@@ -10,6 +10,9 @@ namespace SpaceGame
             Player player = new HumanPlayer();
             Player enemy = new ComputerPlayer();
 
+            enemy.EnemyDamage = player.Damage;
+            player.EnemyDamage = enemy.Damage;
+
             player.OutPutStats();
             enemy.OutPutStats();
 
@@ -17,16 +20,23 @@ namespace SpaceGame
 
             while (fight)
             {
+                player.CanAddGamePoints = true;
+                enemy.CanAddGamePoints = true;
+
                 player.ResetGamePoints();
                 enemy.ResetGamePoints();
 
-                while (CanAddGamePoints(player) && CanAddGamePoints(enemy))
+                while (player.CanAddGamePoints)
                 {
-                    player.AddPersonalPoints();
-                    enemy.AddPersonalPoints();
+                    player.TakeScores();
+                    player.CheckIfOutOfBounds();
                 }
 
-                player.CheckIfOutOfBounds();
+                while (CanAddGamePoints(enemy))
+                {
+                    enemy.TakeScores();
+                }
+                
                 enemy.CheckIfOutOfBounds();
 
                 var attacked = WhoGetDamage(player, enemy);
@@ -50,6 +60,8 @@ namespace SpaceGame
 
             Console.ReadKey();
         }
+
+        
 
         static int CountGamePoints(Player player, Player bot)
         {
