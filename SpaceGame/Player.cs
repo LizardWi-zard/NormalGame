@@ -22,6 +22,7 @@ namespace SpaceGame
         public bool CanAddGamePoints = true;
 
         public int Health;
+        public int StartHealth;
 
         public int GamePoints;
 
@@ -34,6 +35,7 @@ namespace SpaceGame
         {
             Random random = new Random();
             Health = random.Next(MinHealth, MaxHealth);
+            StartHealth = Health;
             Damage = random.Next(MinDamage, MaxDamage);
         }
 
@@ -57,7 +59,7 @@ namespace SpaceGame
 
         public void OutPutStats()
         {
-            Console.WriteLine($"{Health}, {Damage}, {GamePoints}");
+            Console.WriteLine($"{Health}/{StartHealth}, {Damage}, {GamePoints}/12");
         }
     }
 }

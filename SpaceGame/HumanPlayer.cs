@@ -31,7 +31,7 @@ namespace SpaceGame
             else
             {
                 GamePoints += new Random().Next(1, 7);
-                Console.WriteLine($"Current gamePoints: {GamePoints}");
+                Console.WriteLine($"Current gamePoints: {GamePoints}/12");
             }
         }
     }
