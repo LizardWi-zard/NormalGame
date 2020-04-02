@@ -41,25 +41,26 @@ namespace SpaceGame
                 
                 enemy.CheckIfOutOfBounds();
 
-                // Тут вообще какая-то ерунда вышла. Надо менять
-
-                /*
-                var defender = WhoGetDamage(player, enemy);
-                var attacker = WhoGiveDamage(player, enemy);
-
-                if (attacker != null && defender != null)
+                if (player.GamePoints != enemy.GamePoints)
                 {
-                    GetDamage(CountGamePoints(player, enemy), attacker, defender);
+                    var attacker = (player.GamePoints > enemy.GamePoints) ? player : enemy;
+                    var defender = (attacker == player) ? enemy : player;
+
+                    Battle(attacker, defender);
                 }
-                */
-
-                GiveDamage(player, enemy);
-
+                
                 Console.Clear();
                 Console.WriteLine("");
                 player.OutPutStats();
                 enemy.OutPutStats();
-                PrintAboutDamage(player, enemy);
+
+                if (player.GamePoints == enemy.GamePoints)
+                    Console.WriteLine("Nobody get damage");
+                else if (player.GamePoints > enemy.GamePoints)
+                    Console.WriteLine("Computer get damage");
+                else Console.WriteLine("Player get damage");
+
+
 
                 Console.WriteLine("Turn ended");
 
@@ -71,55 +72,15 @@ namespace SpaceGame
             player.OutPutStats();
             enemy.OutPutStats();
 
-            //Console.WriteLine($"Winner: {WhoGiveDamage(player, enemy)}");
-            Console.WriteLine($"Loser: {WhoGetDamage(player, enemy)}");
+            Console.WriteLine($"Winner: {(player.Health < 0 ? "computer" : "player")}");
+            //Console.WriteLine($"Loser: {WhoGetDamage(player, enemy)}");
 
             Console.ReadKey();
         }
-        static int CountGamePoints(Player player, Player enemy)
+        static void Battle(Player attacker, Player defender)
         {
-            if (player.GamePoints > enemy.GamePoints)
-            {
-                return player.GamePoints - enemy.GamePoints;
-            }
-            else if (player.GamePoints < enemy.GamePoints)
-            {
-                return enemy.GamePoints - player.GamePoints;
-            }
-            else
-            {
-                return 0;
-            }
+            defender.Health -= attacker.Damage * (attacker.GamePoints - defender.GamePoints);
         }
-
-        static Player WhoGetDamage(Player player, Player enemy)
-        {
-            if (player.GamePoints > enemy.GamePoints)
-            {
-                return enemy;
-            }
-            else if (player.GamePoints < enemy.GamePoints)
-            {
-                return player;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        static void GiveDamage(Player player, Player enemy)
-        {
-            if (player.GamePoints < enemy.GamePoints)
-            {
-                GetDamage(CountGamePoints(player, enemy), enemy, player);
-            }
-            else if (player.GamePoints > enemy.GamePoints)
-            {
-                GetDamage(CountGamePoints(player, enemy), player, enemy);
-            }
-        }
-
         static bool CheckIsFightContinue(Player player, Player enemy)
         {
             if (player.Health <= 0 || enemy.Health <= 0)
@@ -151,20 +112,6 @@ namespace SpaceGame
             Console.WriteLine("If your point will be more than 12 they will be equal 6");
             Console.WriteLine("Good luck!");
             Console.WriteLine("");
-        }
-
-        // Я не уверен, что это правильно. Это надо переделать в более простой вариант
-        static void PrintAboutDamage(Player player, Player enemy)
-        {
-            if (WhoGetDamage(player, enemy) == player)
-            {
-                Console.WriteLine($"Damage get: {enemy.Damage * CountGamePoints(player, enemy)}");
-            }
-            else if (WhoGetDamage(player, enemy) == enemy)
-            {
-                Console.WriteLine($"Damage given: {player.Damage * CountGamePoints(player, enemy)}");
-            }
-            else Console.WriteLine("Nobody get damage");
         }
     }
 }

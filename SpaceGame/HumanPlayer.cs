@@ -22,6 +22,7 @@ namespace SpaceGame
             //Console.WriteLine("Add points?");
             //Console.WriteLine("0 for NO / 1 to YES");
 
+            
             CheckerForPoints = Convert.ToInt32(Console.ReadLine());
                                                                          
             if(CheckerForPoints == 0)
