@@ -42,22 +42,26 @@ namespace SpaceGame
                 enemy.CheckIfOutOfBounds();
 
                 // Тут вообще какая-то ерунда вышла. Надо менять
+
+                /*
                 var defender = WhoGetDamage(player, enemy);
                 var attacker = WhoGiveDamage(player, enemy);
-                //attacked?.GetDamage(CountGamePoints(player, enemy));
 
                 if (attacker != null && defender != null)
                 {
                     GetDamage(CountGamePoints(player, enemy), attacker, defender);
                 }
+                */
 
+                GiveDamage(player, enemy);
+
+                Console.Clear();
                 Console.WriteLine("");
                 player.OutPutStats();
                 enemy.OutPutStats();
                 PrintAboutDamage(player, enemy);
 
                 Console.WriteLine("Turn ended");
-                Console.WriteLine(" ");
 
                 fight = CheckIsFightContinue(player, enemy);
             }
@@ -67,19 +71,20 @@ namespace SpaceGame
             player.OutPutStats();
             enemy.OutPutStats();
 
+            //Console.WriteLine($"Winner: {WhoGiveDamage(player, enemy)}");
             Console.WriteLine($"Loser: {WhoGetDamage(player, enemy)}");
 
             Console.ReadKey();
         }
-        static int CountGamePoints(Player player, Player bot)
+        static int CountGamePoints(Player player, Player enemy)
         {
-            if (player.GamePoints > bot.GamePoints)
+            if (player.GamePoints > enemy.GamePoints)
             {
-                return player.GamePoints - bot.GamePoints;
+                return player.GamePoints - enemy.GamePoints;
             }
-            else if (player.GamePoints < bot.GamePoints)
+            else if (player.GamePoints < enemy.GamePoints)
             {
-                return bot.GamePoints - player.GamePoints;
+                return enemy.GamePoints - player.GamePoints;
             }
             else
             {
@@ -87,13 +92,13 @@ namespace SpaceGame
             }
         }
 
-        static Player WhoGetDamage(Player player, Player bot)
+        static Player WhoGetDamage(Player player, Player enemy)
         {
-            if (player.GamePoints > bot.GamePoints)
+            if (player.GamePoints > enemy.GamePoints)
             {
-                return bot;
+                return enemy;
             }
-            else if (player.GamePoints < bot.GamePoints)
+            else if (player.GamePoints < enemy.GamePoints)
             {
                 return player;
             }
@@ -103,25 +108,21 @@ namespace SpaceGame
             }
         }
 
-        static Player WhoGiveDamage(Player player, Player bot)
+        static void GiveDamage(Player player, Player enemy)
         {
-            if (player.GamePoints < bot.GamePoints)
+            if (player.GamePoints < enemy.GamePoints)
             {
-                return bot;
+                GetDamage(CountGamePoints(player, enemy), enemy, player);
             }
-            else if (player.GamePoints > bot.GamePoints)
+            else if (player.GamePoints > enemy.GamePoints)
             {
-                return player;
-            }
-            else
-            {
-                return null;
+                GetDamage(CountGamePoints(player, enemy), player, enemy);
             }
         }
 
-        static bool CheckIsFightContinue(Player player, Player bot)
+        static bool CheckIsFightContinue(Player player, Player enemy)
         {
-            if (player.Health <= 0 || bot.Health <= 0)
+            if (player.Health <= 0 || enemy.Health <= 0)
             {
                 return false;
             }
@@ -139,7 +140,7 @@ namespace SpaceGame
 
         static void GetDamage(int countOfHits, Player attacker, Player defender)
         {
-            defender.Health -= attacker.Damage * countOfHits; 
+            defender.Health -= attacker.Damage * countOfHits;
         }
 
         static void PrintRules()
