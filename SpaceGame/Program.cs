@@ -7,7 +7,9 @@ namespace SpaceGame
         static bool fight = true;
         public static void Main()
         {
-            PrintRules();
+            Menu menu = new Menu();
+
+            menu.DrawMenu();
 
             Player player = new HumanPlayer();
             Player enemy = new ComputerPlayer();
@@ -88,16 +90,6 @@ namespace SpaceGame
                 return false;
             }
             else return true;
-        }
-
-        static void PrintRules()
-        {
-           Console.WriteLine("You have to defeat your enemy");
-           Console.WriteLine("You can add GAMEPOINTS by pressing any number exept 0");
-           Console.WriteLine("Press 0 if you want to stop adding points");
-           Console.WriteLine("If your point will be more than 12 they will be equal 6");
-           Console.WriteLine("Good luck!");
-           Console.WriteLine("");
         }
     }
 }
