@@ -10,7 +10,6 @@ namespace SpaceGame
         protected int MaxHealth;
         protected int MinDamage;
         protected int MaxDamage;
-
         public int Damage
         {
             get;
@@ -28,7 +27,6 @@ namespace SpaceGame
         {
             GamePoints = 0;
         }
-
         public void Initialization()
         {
             Random random = new Random();
@@ -51,6 +49,10 @@ namespace SpaceGame
         public void OutPutStats()
         {
             Console.WriteLine($"{Health}/{StartHealth}, {Damage}, {GamePoints}/12");
+        }
+        public void Attack(Player target)
+        {
+            target.Health -= Damage * (GamePoints - target.GamePoints);
         }
     }
 }
