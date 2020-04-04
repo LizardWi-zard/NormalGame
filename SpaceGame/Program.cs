@@ -2,15 +2,12 @@
 
 namespace SpaceGame
 {
-    public class Program
+    public class GameLogic
     {
-        static bool fight = true;
-        public static void Main()
+        static bool fight;
+        public void Game()
         {
-            Menu menu = new Menu();
-
-            menu.DrawMenu();
-
+            fight = true;
             Player player = new HumanPlayer();
             Player enemy = new ComputerPlayer();
 
@@ -70,8 +67,8 @@ namespace SpaceGame
             enemy.OutPutStats();
 
             Console.WriteLine($"Winner: {(player.Health < 0 ? "computer" : "player")}");
-
             Console.ReadKey();
+            Console.Clear();
         }
 
         static bool CheckIsFightContinue(Player player, Player enemy)

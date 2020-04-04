@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace SpaceGame
 {
     class Menu
     {
+        static GameLogic game = new GameLogic();
+        static ConsoleKey pressedKey = Console.ReadKey().Key;
         static MenuDebug menu = new MenuDebug();
         static Dictionary<string, Action> MenuManager = new Dictionary<string, Action>{
-            { "Start", () => { return; } }, // оно работает не правильно, надо додлеать
+            { "Start", () => { game.Game(); } },
             { "Rules", () => { menu.PrintRules(); } },
             { "About", () => { menu.PrintAbout(); } },
             { "Exit", () => {  System.Diagnostics.Process.GetCurrentProcess().Kill(); } }
         };
-        public static void DrawMenu()
-        {
+        public static void Main()
+        {            
             int a = 0;
             PrintMenu(a);
-            ConsoleKey pressedKey = Console.ReadKey().Key;
+
             while (pressedKey != ConsoleKey.Escape)
             {
+                pressedKey = Console.ReadKey().Key;
                 Console.Clear();
 
                 switch (pressedKey)
@@ -29,26 +31,23 @@ namespace SpaceGame
                         if (a == 0)
                             a = 0;
                         else a--;
-                        PrintMenu(a);
                         break;
                     case ConsoleKey.DownArrow:
                         if (a == 3)
                             a = 3;
                         else a++;
-                        PrintMenu(a);
                         break;
                     case ConsoleKey.Enter:
                         MenuManager.ElementAt(a).Value();
                         break;
-                    case 0:
-                        PrintMenu(a);
+                    case ConsoleKey.Escape:
+                        Console.Clear();
                         break;
                 }
-
-
-                pressedKey = Console.ReadKey().Key;
+                        PrintMenu(a);
             }
         }
+
         static void PrintMenu(int a)
         {
             for (int i = 0; i < MenuManager.Count; i++)
@@ -56,7 +55,6 @@ namespace SpaceGame
                 if (i == a)
                 { Console.WriteLine(">" + MenuManager.ElementAt(i).Key); }
                 else { Console.WriteLine(" " + MenuManager.ElementAt(i).Key); }
-
             }
         }
     }
@@ -77,6 +75,7 @@ namespace SpaceGame
             {
                 neededKey = Console.ReadKey().Key;
             }
+            Console.Clear();
         }
         public void PrintAbout()
         {
@@ -88,6 +87,7 @@ namespace SpaceGame
             {
                 neededKey = Console.ReadKey().Key;
             }
+            Console.Clear();
         }
     }
 
