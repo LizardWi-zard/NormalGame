@@ -35,7 +35,7 @@ namespace SpaceGame
 
         public abstract void TakeScores();
 
-        public void CheckIfOutOfBounds()
+        public void CheckPointsRange()
         {
             if (GamePoints > 12)
             {
@@ -46,11 +46,31 @@ namespace SpaceGame
 
         public void OutPutStats()
         {
-            Console.WriteLine($"{Health}/{StartHealth}, {Damage}, {GamePoints}/12");
+            Console.Write($"Health: ");
+            ColorHealth();
+            Console.WriteLine($"/{StartHealth}");
+            Console.WriteLine($"Damage: {Damage}");
+            Console.Write($"GamePoints: ");
+            ColorGamePoints();
+            Console.WriteLine($"/12");
+            Console.WriteLine(" ");
         }
         public void Attack(Player target)
         {
             target.Health -= Damage * (GamePoints - target.GamePoints);
         }
+        public void ColorHealth() //TODO упростить выражение | изменить название
+        {
+            Console.ForegroundColor = Health > StartHealth * 0.66 ? ConsoleColor.Green : (Health < StartHealth * 0.33) ? ConsoleColor.Red : ConsoleColor.Yellow; ;
+            Console.Write($"{Health}");
+            Console.ResetColor();
+        }
+        public void ColorGamePoints() //TODO упростить выражение 
+        {
+            Console.ForegroundColor = GamePoints >= 9 ? ConsoleColor.Green : (GamePoints < 5) ? ConsoleColor.Red : ConsoleColor.Yellow; ;
+            Console.Write($"{GamePoints}");
+            Console.ResetColor();
+        }
     }
 }
+

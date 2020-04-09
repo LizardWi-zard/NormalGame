@@ -2,91 +2,47 @@
 
 namespace SpaceGame
 {
-    public class GameLogic
+    public static class Program
     {
-        static bool fight;
-        public void Game()
+        public static void Main(string[] args)
         {
-            fight = true;
-            Player player = new HumanPlayer();
-            Player enemy = new ComputerPlayer();
+            GameLogic game = new GameLogic();
 
-            player.OutPutStats();
-            enemy.OutPutStats();
+            Menu menu = new Menu();
+            menu.AddMenuItem("Start", () => { Console.Clear(); game.StartNewGame();});
+            menu.AddMenuItem("Rules", () => PrintRules());
+            menu.AddMenuItem("About", () => PrintAbout());
+            menu.AddMenuItem("Exit", () => Environment.Exit(0));
 
-            Console.WriteLine("/ / / / Game started / / / /");
+            menu.Show();
+        }
 
-            while (fight)
-            {
-                player.CanAddGamePoints = true;
-                enemy.CanAddGamePoints = true;
-
-                player.ResetGamePoints();
-                enemy.ResetGamePoints();
-
-                while (player.CanAddGamePoints)
-                {
-                    player.TakeScores();
-                    player.CheckIfOutOfBounds();
-                }
-
-                while (CanAddGamePoints(enemy))
-                {
-                    enemy.TakeScores();
-                }
-                
-                enemy.CheckIfOutOfBounds();
-
-                if (player.GamePoints != enemy.GamePoints)
-                {
-                    var attacker = (player.GamePoints > enemy.GamePoints) ? player : enemy;
-                    var defender = (attacker == player) ? enemy : player;
-
-                    attacker.Attack(defender);
-                }
-                
-                Console.Clear();
-                Console.WriteLine("");
-                player.OutPutStats();
-                enemy.OutPutStats();
-
-                if (player.GamePoints == enemy.GamePoints)
-                    Console.WriteLine("Nobody get damage");
-                else if (player.GamePoints > enemy.GamePoints)
-                    Console.WriteLine("Computer get damage");
-                else Console.WriteLine("Player get damage");
-
-                Console.WriteLine("Turn ended");
-
-                fight = CheckIsFightContinue(player, enemy);
-            }
-
-            Console.WriteLine("/ / / / Game ended / / / /");
-
-            player.OutPutStats();
-            enemy.OutPutStats();
-
-            Console.WriteLine($"Winner: {(player.Health < 0 ? "computer" : "player")}");
-            Console.ReadKey();
+        public static void PrintRules()
+        {
             Console.Clear();
+            Console.WriteLine("You have to defeat your enemy");
+            Console.WriteLine("You can add GAMEPOINTS by pressing any number exept 0");
+            Console.WriteLine("Press 0 if you want to stop adding points");
+            Console.WriteLine("If your point will be more than 12 they will be equal 6");
+            Console.WriteLine("Good luck!");
+            Console.WriteLine("\nPress [Esc] for return.");
+
+            while (Console.ReadKey().Key != ConsoleKey.Escape)
+            {
+            }
         }
 
-        static bool CheckIsFightContinue(Player player, Player enemy)
+        public static void PrintAbout()
         {
-            if (player.Health <= 0 || enemy.Health <= 0)
-            {
-                return false;
-            }
-            else return true;
-        }
+            Console.Clear();
+            Console.WriteLine("Made by Artem Efremov (Lizard_W1zard)");
+            Console.WriteLine("2020");
+            Console.WriteLine("\nPress [Esc] for return.");
 
-        static bool CanAddGamePoints(Player currentPlayer)
-        {
-            if (currentPlayer.GamePoints >= 9)
+            while (Console.ReadKey().Key != ConsoleKey.Escape)
             {
-                return false;
             }
-            else return true;
         }
     }
 }
+

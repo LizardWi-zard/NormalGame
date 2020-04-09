@@ -16,17 +16,28 @@ namespace SpaceGame
         }
 
         public override void TakeScores()
-        {            
-            CheckerForPoints = Convert.ToInt32(Console.ReadLine());
-                                                                         
-            if(CheckerForPoints == 0)
+        {
+            bool isCorrectInput = false;
+            int input = 0;
+
+            while (!isCorrectInput)
+            {
+                isCorrectInput = int.TryParse(Console.ReadKey().KeyChar.ToString(), out input);
+            }
+
+            CheckerForPoints = input;
+
+            if (CheckerForPoints == 0)
             {
                 CanAddGamePoints = false;
-            } 
+            }
             else
             {
                 GamePoints += new Random().Next(1, 7);
-                Console.WriteLine($"Current gamePoints: {GamePoints}/12");
+                Console.Clear();
+                Console.Write($"GamePoints: ");
+                ColorGamePoints();
+                Console.WriteLine($"/12");
             }
         }
     }
